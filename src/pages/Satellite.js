@@ -43,6 +43,7 @@ export default function Home() {
         }
     }
       const uploadImage = (e) => {
+            setResults('');
              for (let i = 0; i < e.target.files.length; i++) {
              const url = URL.createObjectURL(e.target.files[i]);
              const filename = e.target.files[i].name;
