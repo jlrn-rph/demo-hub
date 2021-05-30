@@ -16,6 +16,7 @@ import ChevronButtons from '../components/ChevronButtons';
 import { useState, useEffect, useRef } from 'react';
 import CardMedia from '@material-ui/core/CardMedia';
 import * as tf from "@tensorflow/tfjs";
+import CsvDownloader from 'react-csv-downloader';
 
 export default function Home() {
   const classNames = ['AnnualCrop', 'Forest', 'HerbaceousVegetation', 'Highway', 'Industrial', 'Pasture', 'PermanentCrop', 'Residential', 'River', 'SeaLake'];
@@ -23,12 +24,14 @@ export default function Home() {
     const [model, setModel] = useState(null);
     const [imageURL, setImageURL] = useState(null);
     const [results, setResults] = useState([]);
+    const [uniqueCouse, SetUniqueCourse] = useState(null); 
     const fileInputRef = useRef();
       let classes = useStyles();
       let image = [];
       let Output = [];
       let images = document.images; 
-      console.log(results);
+
+      console.log(uniqueCouse);
       //Load Model
       const loadModel = async () => {
         setIsModelLoading(true);
@@ -63,6 +66,7 @@ export default function Home() {
           const labelPrediction = results.as1D().argMax().dataSync()[0]; //get class name
           Output.push([i+1,name,classNames[labelPrediction],results.dataSync()[0]]);
       }setResults(Output);
+      SetUniqueCourse(results, results[2]);
   }
 
      const triggerUpload = () => {
@@ -77,6 +81,35 @@ export default function Home() {
     return <h2>Model Loading...</h2>
   }
 
+  const columns = [{
+    id: 'index',
+    displayName: 'index'
+  }, 
+  {
+    id: 'filename',
+    displayName: 'filename'
+  },
+  {
+    id: 'classname',
+    displayName: 'classname'
+  },
+  {
+    id: 'confidence_level',
+    displayName: 'confidence_level'
+  }
+];
+
+  const datas =
+  [
+    {
+    index: Output[0],
+    filename: Output[1],
+    classname: Output[2],
+    confidence_level: Output[3] 
+  }
+];
+
+ 
       return (
         <React.Fragment>
           <CssBaseline />
@@ -91,7 +124,7 @@ export default function Home() {
                     <Grid item xs={12}>
                     <Paper className={classes.paper}>
                             <Title title = 'Satellite Classifer' />
-                            <Title description = 'Upload satellite images and get valve classification results' />
+                            <Title description = 'Upload satellite images and get satellite classification results' />
                         </Paper>
                     </Grid>
     
@@ -117,6 +150,17 @@ export default function Home() {
                         value="AnnualCrop"
                         valueLabel="AnnualCrop"
                       />
+                  {uniqueCouse && (
+                    <select>
+                    {uniqueCouse.map(item => (
+                      <option key={item[1]} value={item[1]}>
+                        {item[2]}
+                      </option>
+                    ))}
+                    {console.log(uniqueCouse)}
+                  </select>
+                  )}
+                  
                     </Grid>
 
                     {/* Image Preview
@@ -168,7 +212,15 @@ export default function Home() {
 
                     {/* Export Button */} 
                     <Grid item xs={12} md={6} lg={6} container justify="center">
-                        <CustomButton variant="contained" color="secondary" label="EXPORT CSV "></CustomButton>
+                        {/* <CustomButton variant="contained" color="secondary" label="EXPORT CSV "></CustomButton> */}
+                        <CsvDownloader
+                    filename="myfile"
+                    extension=".csv"
+                    columns={columns}
+                    datas={datas}>
+                    <Button className='button' variant="contained" color="secondary" component="span">EXPORT CSV</Button>
+                  </CsvDownloader>
+
                     </Grid>
 
                 </Grid>
