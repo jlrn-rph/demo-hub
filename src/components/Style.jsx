@@ -99,4 +99,9 @@ export const useStyles = makeStyles((theme) => ({
       paddingLeft: theme.spacing(12),
       paddingBottom: theme.spacing(4),
   },
+  previewHeader: {
+    fontWeight: 500,
+    color: "#263238",
+    paddingTop: "20px"
+  },
 }));

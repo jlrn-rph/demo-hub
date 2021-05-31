@@ -45,3 +45,36 @@ body {
   height: 50px;
   object-fit: cover;
 } */
+
+.paginationButtons {
+  width: 80%;
+  height: 10px;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.paginationButtons a {
+  padding: 10px;
+  margin: 8px;
+  border-radius: 5px;
+  border: 1px solid #c78f00;
+  color: #000;
+  cursor: pointer;
+}
+
+.paginationButtons a:hover {
+  color: #000;
+  background-color: #ffbf00;
+}
+
+.paginationActive a {
+  color: #000;
+  background-color: #ffbf00;
+}
+
+.paginationDisabled a {
+  color: rgb(189, 189, 189);
+  background-color: rgb(189, 189, 189);
+}
