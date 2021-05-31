@@ -42,7 +42,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const cards = [1,2];
+const cards = [["Valve", "http://localhost:3000/valve","images/good_all_226.bmp", "Upload valve images and get valve classification results"]
+  ,["Satellite", "http://localhost:3000/satellite","images/AnnualCrop_190.jpg", "Upload satellite images and get satellite classification results"]];
 
 export default function Album() {
   const classes = useStyles();
@@ -59,20 +60,21 @@ export default function Album() {
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
-                    image="https://source.unsplash.com/random"
+                    image={card[2]}
                     title="Image title"
                   />
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">
-                      Heading
+                    {card[0]}
                     </Typography>
                     <Typography>
-                      This is a media card. You can use this section to describe the content.
+                    {card[3]}
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button size="small" color="primary">
-                      View
+                    
+                    <Button size="small" color="primary" onClick={event =>  window.location.href=card[1]}>
+                    View
                     </Button>
                   </CardActions>
                 </Card>
