@@ -9,6 +9,9 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { ThemeProvider} from '@material-ui/core';
+import { theme } from '../components/Style';
+
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -42,8 +45,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const cards = [["Valve", "http://localhost:3000/valve","images/good_all_226.bmp", "Upload valve images and get valve classification results"]
-  ,["Satellite", "http://localhost:3000/satellite","images/AnnualCrop_190.jpg", "Upload satellite images and get satellite classification results"]];
+const cards = [
+  ["Valve Inspection", "http://localhost:3000/valve","images/good_all_226.bmp", "Upload valve images and get valve classification results"],
+  ["Satellite Classifier", "http://localhost:3000/satellite","images/AnnualCrop_190.jpg", "Upload satellite images and get satellite classification results"]
+];
 
 export default function Album() {
   const classes = useStyles();
@@ -52,6 +57,7 @@ export default function Album() {
     <React.Fragment>
       <CssBaseline />
       <main>
+    <ThemeProvider theme={theme}>
       <Container className={classes.cardGrid} maxWidth="md">
           {/* End hero unit */}
           <Grid container spacing={4}>
@@ -61,7 +67,6 @@ export default function Album() {
                   <CardMedia
                     className={classes.cardMedia}
                     image={card[2]}
-                    title="Image title"
                   />
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">
@@ -82,6 +87,7 @@ export default function Album() {
             ))}
           </Grid>
         </Container>
+        </ThemeProvider>
       </main>
     </React.Fragment>
   );
