@@ -21,7 +21,7 @@ const styles = theme => ({
     }
 });
 
-const Result = ({ classes, index, filename, classname, confidence }) => {
+const Result = ({ classes, index, filename, classname, classLabel, confidence }) => {
     return(
         <ThemeProvider theme={theme}> 
             <CardHeader title="Result" className={classes.title} />
@@ -35,7 +35,7 @@ const Result = ({ classes, index, filename, classname, confidence }) => {
                         <Typography variant="h6">{ filename }</Typography>
                         <Divider className={classes.divider} />
 
-                        <Typography variant="subtitle1" className={classes.subtitle}> VALVE TYPE </Typography>
+                        <Typography variant="subtitle1" className={classes.subtitle}> { classLabel } </Typography>
                         <Typography variant="h6">{ classname }</Typography>
                         <Divider className={classes.divider} />
 
