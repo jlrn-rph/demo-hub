@@ -1,4 +1,9 @@
-import React from 'react'
+import React from 'react';
+import { useState, useEffect, useRef } from 'react';
+import Sidebar from '../components/Nav';
+import Title from '../components/Title';
+import Result from '../components/Result';
+import ReactHTMLTableToExcel from '../components/ReactHTMLTableToExcel';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Box from '@material-ui/core/Box';
@@ -6,20 +11,9 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { Button, ThemeProvider, Typography} from '@material-ui/core';
 import { useStyles, theme } from '../components/Style';
-import Sidebar from '../components/Nav';
-import Title from '../components/Title';
-import CustomButton from '../components/Buttons';
-import ImagePreview from '../components/ImagePreview';
-import Filter from '../components/FilterSelect';
-import Result from '../components/Result';
-import Carousel from 'react-elastic-carousel'
-import Card from '@material-ui/core/Card';
 import ReactPaginate from "react-paginate";
-import CardMedia from '@material-ui/core/CardMedia';
-import { useState, useEffect, useRef } from 'react';
-import CsvDownloader from 'react-csv-downloader';
-import Select from '@material-ui/core/Select';
 import * as tf from "@tensorflow/tfjs";
+
 
 export default function Home() {
   const classNames = ['Defective', 'Good'];
@@ -28,20 +22,14 @@ export default function Home() {
   const [imageURL, setImageURL] = useState([]);
   const [results, setResults] = useState([]);
   const [resultsY, setResultsY] = useState([]);
-  const [search, setSearch] = useState('');
-  const [button, setButton] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
   const fileInputRef = useRef();
   let classes = useStyles();
   let image = [];
   let Output = [];
-  let x = [];
   let y = [];
   let images = document.images; 
-  console.log(x);
-  console.log("y", y);
   console.log('res', results);
-  console.log('resY', resultsY);
   
   //Load Model
   const loadModel = async () => {
@@ -70,7 +58,6 @@ export default function Home() {
 
   //Detect Image
   const identify = async (e) => {
-    // const images = e.target.files;
   for(let i = 0; i < images.length; i++){
     const results = await model.predict(tf.browser
       .fromPixels(images[i])
@@ -81,21 +68,23 @@ export default function Home() {
     let index = images[i].attributes[1].textContent.split("/");
     // let nameSplit = name[name.length - 1];
     const labelPrediction = results.as1D().dataSync()[0];
+    Output.push([index,name,classNames[labelPrediction],results.dataSync()[0]]);
+    
+    //test 
     y.push({
       index: index,
       file_name: name,
       class_name: classNames[labelPrediction],
       value: results.dataSync()[0]
     });
-
-    Output.push([index,name,classNames[labelPrediction],results.dataSync()[0]]);
   }
     setResults(Output);
-    setResultsY(y);
-  }
+    console.log('Output', Output);
 
-  let jsonfile = JSON.stringify(resultsY, undefined, 2);
-  console.log(jsonfile);
+    //test output
+    setResultsY(resultsY => [resultsY.concat(y)]);
+    console.log('Y Output', y);
+  }
 
   const triggerUpload = () => {
     fileInputRef.current.click();
@@ -109,13 +98,14 @@ export default function Home() {
     return <h2>Model Loading...</h2>
   }
 
-  const imagePerPage = 2;
+  //Pagination
+  const imagePerPage = 10;
   const pagesVisited = pageNumber * imagePerPage;
   const displayImages = imageURL
   .slice(pagesVisited, pagesVisited + imagePerPage)
   .map((key) =>  {
       return (
-        <img name={key[2]} id={key[0]} src={key[1]} crossOrigin="anonymous" style={{height: '375px', width: '564px',}} />
+        <img name={key[2]} id={key[0]} src={key[1]} crossOrigin="anonymous" style={{height: '375px', width: '564px', marginBottom: '55px'}} />
       )
   })
 
@@ -125,39 +115,6 @@ export default function Home() {
     identify();
   }
 
-    const columns = [{
-      id: 'index',
-      displayName: 'index'
-    }, 
-    {
-      id: 'filename',
-      displayName: 'filename'
-    },
-    {
-      id: 'classname',
-      displayName: 'classname'
-    },
-    {
-      id: 'confidence_level',
-      displayName: 'confidence_level'
-    }
-  ];
-
-    const datas =
-    [
-      {
-      index: results[0],
-      filename: results[1],
-      classname: results[2],
-      confidence_level: results[3] 
-    }
-  ];
-
-  const filter = (button) => {
-    const filteredData = results.filter(results[2] === button)
-    console.log('filter', filteredData);
-    setSearch(filteredData);
-  }
   return (
   <React.Fragment>
     <CssBaseline />
@@ -205,27 +162,22 @@ export default function Home() {
                         {item[2]}
                       </option>
                     ))}
-                    {console.log(setUniqueChoice)}
                   </Select>
                   )} */}
-                  {/* <input type='text' onChange = {(e) => {
-                    setSearch(e.target.value);
-                  }}/> */}
-                  
-                  <button>{filter}</button>
               </Grid>
 
               {/* Image Preview */}
               <Grid item xs={6} md={6} lg={6}> 
-              {imageURL && <Typography variant="h5" gutterBottom className={classes.previewHeader} >
-                  Image Preview
-              </Typography>}
+                {imageURL && <Typography variant="h5" gutterBottom className={classes.previewHeader} >
+                    Image Preview
+                </Typography>}
+              
                 {displayImages}
               </Grid> 
 
               {/* Result */}
               <Grid item xs={6} md={6} lg={6}>
-              {results.length > 0 && <div className='resultsHolder'>
+              {results.length > 0 && <div>
                   {results.map((result) => {
                       return (
                       <Box mt={7}>  
@@ -233,11 +185,12 @@ export default function Home() {
                         <Result 
                           index={result[0]}
                           filename={result[1]}
+                          classLabel={'VALVE TYPE'}
                           classname={result[2]}
                           confidence={(result[3])}
                         />
                         </div>
-                        </Box>
+                      </Box>
                       )
                   })}
               </div>}
@@ -245,7 +198,7 @@ export default function Home() {
                 
               {/* Row */}
               <Grid item xs={6} md={6} lg={6} container justify="center">
-                <ReactPaginate 
+               <ReactPaginate 
                   previousLabel={"<"}
                   nextLabel={">"}
                   pageCount={pageCount}
@@ -260,16 +213,38 @@ export default function Home() {
               </Grid>
 
               {/* Export Button */} 
-              <Grid item xs={12} md={6} lg={6} container justify="center">
-                  <CsvDownloader
-                    filename="myfile"
-                    extension=".csv"
-                    columns={columns}
-                    datas={datas}>
-                    <Button className='button' variant="contained" color="secondary" component="span">EXPORT CSV</Button>
-                  </CsvDownloader>
-              </Grid>
+              <Grid item xs={12} md={6} lg={6} container justify="center" style={{textAlign:'center'}}>
+                <div>
+                  <ReactHTMLTableToExcel
+                    table="export-to-xlsx"
+                    filename="results"
+                    sheet="results"
+                    buttonText="EXPORT XLSX"/>
 
+                  <table id="export-to-xlsx" style={{display:"none"}}>
+                    <thead>
+                        <tr>
+                          <th width="10%">Index</th>
+                          <th width="40%">File Name</th>
+                          <th width="40%">Class Name</th>
+                          <th width="40%">Confidence Level</th>
+                        </tr>
+                        </thead>
+                        
+                        {results.length > 0 && <tbody>
+                          {results.map(result => (
+                              <tr key={result}>
+                                <td>{result[0]}</td>
+                                <td>{result[1]}</td>
+                                <td>{result[2]}</td>
+                                <td>{result[3]}</td>
+                              </tr>
+                            ))}
+                            </tbody>
+                          }
+                    </table>
+                  </div>
+              </Grid>
           </Grid>
       </Container>
     </main>
