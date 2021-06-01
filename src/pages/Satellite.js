@@ -31,7 +31,7 @@ export default function Home() {
   const loadModel = async () => {
     setIsModelLoading(true);
     try {
-        const model = await tf.loadLayersModel("http://localhost:81/satellite/model.json");
+        const model = await tf.loadLayersModel("http://localhost:81/satellite-2/model.json");
         global.fetch = require('node-fetch');
         setModel(model);
         setIsModelLoading(false);
