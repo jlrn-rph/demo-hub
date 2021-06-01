@@ -1,16 +1,16 @@
 import React from 'react';
 import { useState, useEffect, useRef } from 'react';
+import { useStyles, theme } from '../components/Style';
 import Sidebar from '../components/Nav';
 import Title from '../components/Title';
 import Result from '../components/Result';
-import ReactHTMLTableToExcel from '../components/ReactHTMLTableToExcel';
+import { Button, ThemeProvider, Typography} from '@material-ui/core';
 import Container from '@material-ui/core/Container';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';  
 import Paper from '@material-ui/core/Paper';
-import { Button, ThemeProvider, Typography} from '@material-ui/core';
-import { useStyles, theme } from '../components/Style';
+import ReactHTMLTableToExcel from '../components/ReactHTMLTableToExcel';
 import ReactPaginate from "react-paginate";
 import * as tf from "@tensorflow/tfjs";
 
@@ -24,6 +24,7 @@ export default function Home() {
   const [resultsY, setResultsY] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
   const fileInputRef = useRef();
+  const MAX_LENGTH = 100;
   let classes = useStyles();
   let image = [];
   let Output = [];
@@ -48,12 +49,18 @@ export default function Home() {
   //Upload Image
   const uploadImage = (e) => {
         setResults('');
+        if (Array.from(e.target.files).length > MAX_LENGTH) {
+          e.preventDefault();
+          alert(`Cannot upload files more than ${MAX_LENGTH}`);
+          return;
+        } else {
           for (let i = 0; i < e.target.files.length; i++) {
           const url = URL.createObjectURL(e.target.files[i]);
           const filename = e.target.files[i].name;
               image.push([i+1, url,filename]);
           }
         setImageURL(image);
+      }
     }
 
   //Detect Image
