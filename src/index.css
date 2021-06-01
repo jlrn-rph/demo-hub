@@ -77,4 +77,12 @@ body {
 .paginationDisabled a {
   color: rgb(189, 189, 189);
   background-color: rgb(189, 189, 189);
+  border: none;
+}
+
+.paginationDisabled a:hover {
+  color: rgb(189, 189, 189);
+  background-color: rgb(189, 189, 189);
+  border: none;
+  cursor: none;
 }
