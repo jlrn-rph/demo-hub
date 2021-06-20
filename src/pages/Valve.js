@@ -21,14 +21,12 @@ export default function Home() {
   const [model, setModel] = useState(null);
   const [imageURL, setImageURL] = useState([]);
   const [results, setResults] = useState([]);
-  const [resultsY, setResultsY] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
   const fileInputRef = useRef();
   const MAX_LENGTH = 100;
   let classes = useStyles();
   let image = [];
   let Output = [];
-  let y = [];
   let images = document.images; 
   console.log('res', results);
   
@@ -76,21 +74,8 @@ export default function Home() {
     // let nameSplit = name[name.length - 1];
     const labelPrediction = results.as1D().dataSync()[0];
     Output.push([index,name,classNames[labelPrediction],results.dataSync()[0]]);
-    
-    //test 
-    y.push({
-      index: index,
-      file_name: name,
-      class_name: classNames[labelPrediction],
-      value: results.dataSync()[0]
-    });
   }
     setResults(Output);
-    console.log('Output', Output);
-
-    //test output
-    setResultsY(resultsY => [resultsY.concat(y)]);
-    console.log('Y Output', y);
   }
 
   const triggerUpload = () => {
@@ -119,7 +104,7 @@ export default function Home() {
   const pageCount = Math.ceil(imageURL.length/imagePerPage);
   const changePage = ({selected}) => {
     setPageNumber(selected);
-    identify();
+    setResults('');
   }
 
   return (
@@ -161,16 +146,6 @@ export default function Home() {
                   value="Good"
                   valueLabel="Good"
                 /> */}
-                {/* { results.length > 0 && (
-                    <Select style={{ margin: theme.spacing(0.5),
-                      minWidth: 120,}}>
-                    {results.map(item => (
-                      <option key={item[1]} value={item[1]}>
-                        {item[2]}
-                      </option>
-                    ))}
-                  </Select>
-                  )} */}
               </Grid>
 
               {/* Image Preview */}
@@ -226,7 +201,7 @@ export default function Home() {
                     table="export-to-xlsx"
                     filename="results"
                     sheet="results"
-                    buttonText="EXPORT XLSX"/>
+                    buttonText="EXPORT AS EXCEL"/>
 
                   <table id="export-to-xlsx" style={{display:"none"}}>
                     <thead>
