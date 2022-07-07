@@ -1,7 +1,7 @@
 /* global window, document, Blob */
-import React, { Component } from 'react';
-import { Button} from '@material-ui/core';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import { Button } from "@material-ui/core";
+import PropTypes from "prop-types";
 
 const propTypes = {
   table: PropTypes.string.isRequired,
@@ -13,9 +13,9 @@ const propTypes = {
 };
 
 const defaultProps = {
-  id: 'button-download-as-xls',
-  className: 'button-download',
-  buttonText: 'Download',
+  id: "button-download-as-xls",
+  className: "button-download",
+  buttonText: "Download",
 };
 
 class ReactHTMLTableToExcel extends Component {
@@ -34,16 +34,19 @@ class ReactHTMLTableToExcel extends Component {
 
   handleDownload() {
     if (!document) {
-      if (process.env.NODE_ENV !== 'production') {
-        console.error('Failed to access document object');
+      if (process.env.NODE_ENV !== "production") {
+        console.error("Failed to access document object");
       }
 
       return null;
     }
 
-    if (document.getElementById(this.props.table).nodeType !== 1 || document.getElementById(this.props.table).nodeName !== 'TABLE') {
-      if (process.env.NODE_ENV !== 'production') {
-        console.error('Provided table property is not html table element');
+    if (
+      document.getElementById(this.props.table).nodeType !== 1 ||
+      document.getElementById(this.props.table).nodeName !== "TABLE"
+    ) {
+      if (process.env.NODE_ENV !== "production") {
+        console.error("Provided table property is not html table element");
       }
 
       return null;
@@ -53,38 +56,45 @@ class ReactHTMLTableToExcel extends Component {
     const sheet = String(this.props.sheet);
     const filename = `${String(this.props.filename)}.xls`;
 
-    const uri = 'data:application/vnd.ms-excel;base64,';
+    const uri = "data:application/vnd.ms-excel;base64,";
     const template =
       '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-mic' +
       'rosoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta cha' +
       'rset="UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:Exce' +
-      'lWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/>' +
-      '</x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></' +
-      'xml><![endif]--></head><body>{table}</body></html>';
+      "lWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/>" +
+      "</x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></" +
+      "xml><![endif]--></head><body>{table}</body></html>";
 
     const context = {
-      worksheet: sheet || 'Worksheet',
+      worksheet: sheet || "Worksheet",
       table,
     };
 
     // If IE11
     if (window.navigator.msSaveOrOpenBlob) {
       const fileData = [
-        `${'<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-mic' + 'rosoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta cha' + 'rset="UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:Exce' + 'lWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/>' + '</x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></' + 'xml><![endif]--></head><body>'}${table}</body></html>`,
+        `${
+          '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-mic' +
+          'rosoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta cha' +
+          'rset="UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:Exce' +
+          "lWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/>" +
+          "</x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></" +
+          "xml><![endif]--></head><body>"
+        }${table}</body></html>`,
       ];
       const blobObject = new Blob(fileData);
-      document.getElementById('react-html-table-to-excel').click()(() => {
+      document.getElementById("react-html-table-to-excel").click()(() => {
         window.navigator.msSaveOrOpenBlob(blobObject, filename);
       });
 
       return true;
     }
 
-    const element = window.document.createElement('a');
+    const element = window.document.createElement("a");
     element.href =
       uri +
       ReactHTMLTableToExcel.base64(
-        ReactHTMLTableToExcel.format(template, context),
+        ReactHTMLTableToExcel.format(template, context)
       );
     element.download = filename;
     document.body.appendChild(element);
@@ -104,7 +114,17 @@ class ReactHTMLTableToExcel extends Component {
       // >
       //   {this.props.buttonText}
       // </button>
-      <Button variant="contained" color="secondary" component="span" id={this.props.id}  className={this.props.className} onClick={this.handleDownload}> {this.props.buttonText} </Button>
+      <Button
+        variant="contained"
+        color="secondary"
+        component="span"
+        id={this.props.id}
+        className={this.props.className}
+        onClick={this.handleDownload}
+      >
+        {" "}
+        {this.props.buttonText}{" "}
+      </Button>
     );
   }
 }

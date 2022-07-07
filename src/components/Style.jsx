@@ -1,25 +1,25 @@
-import { makeStyles } from '@material-ui/core/styles';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { makeStyles } from "@material-ui/core/styles";
+import { createMuiTheme } from "@material-ui/core/styles";
 
 export const theme = createMuiTheme({
   palette: {
     primary: {
-      light: '#4b2fac',
-      main: '#00037C',
-      dark: '#00004f',
-      contrastText: '#fff',
+      light: "#4b2fac",
+      main: "#00037C",
+      dark: "#00004f",
+      contrastText: "#fff",
     },
     secondary: {
-      light: '#fff14e',
-      main: '#ffbf00',
-      dark: '#c78f00',
-      contrastText: '#000',
+      light: "#fff14e",
+      main: "#ffbf00",
+      dark: "#c78f00",
+      contrastText: "#000",
     },
-   typography:{
-    subtitle1:{
-      fontweight: 500,
+    typography: {
+      subtitle1: {
+        fontweight: 500,
+      },
     },
-   },
   },
 });
 
@@ -27,11 +27,11 @@ const drawerWidth = 240;
 
 export const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
+    display: "flex",
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
+    transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
@@ -39,7 +39,7 @@ export const useStyles = makeStyles((theme) => ({
   appBarShift: {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
+    transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
@@ -48,39 +48,39 @@ export const useStyles = makeStyles((theme) => ({
     marginRight: 36,
   },
   hide: {
-    display: 'none',
+    display: "none",
   },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
-    whiteSpace: 'nowrap',
+    whiteSpace: "nowrap",
   },
   drawerOpen: {
-    background: '#00037C',
-    color:'white',
+    background: "#00037C",
+    color: "white",
     width: drawerWidth,
-    transition: theme.transitions.create('width', {
+    transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
   drawerClose: {
-    background: '#00037C',
-    color:'white',
-    transition: theme.transitions.create('width', {
+    background: "#00037C",
+    color: "white",
+    transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    overflowX: 'hidden',
+    overflowX: "hidden",
     width: theme.spacing(7) + 1,
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up("sm")]: {
       width: theme.spacing(9) + 1,
     },
   },
   toolbar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
     padding: theme.spacing(0, 1),
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
@@ -89,19 +89,19 @@ export const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: theme.spacing(2),
   },
-    paper: {
-      padding: theme.spacing(2),
-      display: 'flex',
-      overflow: 'auto',
-      flexDirection: 'column',
+  paper: {
+    padding: theme.spacing(2),
+    display: "flex",
+    overflow: "auto",
+    flexDirection: "column",
   },
-    container: {
-      paddingLeft: theme.spacing(12),
-      paddingBottom: theme.spacing(4),
+  container: {
+    paddingLeft: theme.spacing(12),
+    paddingBottom: theme.spacing(4),
   },
   previewHeader: {
     fontWeight: 500,
     color: "#263238",
-    paddingTop: "20px"
+    paddingTop: "20px",
   },
 }));

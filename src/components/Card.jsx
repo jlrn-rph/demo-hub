@@ -1,17 +1,16 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import { ThemeProvider} from '@material-ui/core';
-import { theme } from '../components/Style';
-
+import React from "react";
+import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import { ThemeProvider } from "@material-ui/core";
+import { theme } from "../components/Style";
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -29,12 +28,12 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(8),
   },
   card: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
   },
   cardMedia: {
-    paddingTop: '56.25%', // 16:9
+    paddingTop: "56.25%", // 16:9
   },
   cardContent: {
     flexGrow: 1,
@@ -46,8 +45,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const cards = [
-  ["Valve Inspection", "http://localhost:3000/valve","images/good_all_226.bmp", "Upload valve images and get valve classification results"],
-  ["Satellite Classifier", "http://localhost:3000/satellite","images/AnnualCrop_190.jpg", "Upload satellite images and get satellite classification results"]
+  [
+    "Valve Inspection",
+    "http://localhost:3000/valve",
+    "images/good_all_226.bmp",
+    "Upload valve images and get valve classification results",
+  ],
+  [
+    "Satellite Classifier",
+    "http://localhost:3000/satellite",
+    "images/AnnualCrop_190.jpg",
+    "Upload satellite images and get satellite classification results",
+  ],
 ];
 
 export default function Album() {
@@ -57,36 +66,34 @@ export default function Album() {
     <React.Fragment>
       <CssBaseline />
       <main>
-    <ThemeProvider theme={theme}>
-      <Container className={classes.cardGrid} maxWidth="md">
-          {/* End hero unit */}
-          <Grid container spacing={4}>
-            {cards.map((card) => (
-              <Grid item key={card} xs={6} sm={6} md={6}>
-                <Card className={classes.card}>
-                  <CardMedia
-                    className={classes.cardMedia}
-                    image={card[2]}
-                  />
-                  <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                    {card[0]}
-                    </Typography>
-                    <Typography>
-                    {card[3]}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    
-                    <Button size="small" color="primary" onClick={event =>  window.location.href=card[1]}>
-                    View
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
+        <ThemeProvider theme={theme}>
+          <Container className={classes.cardGrid} maxWidth="md">
+            {/* End hero unit */}
+            <Grid container spacing={4}>
+              {cards.map((card) => (
+                <Grid item key={card} xs={6} sm={6} md={6}>
+                  <Card className={classes.card}>
+                    <CardMedia className={classes.cardMedia} image={card[2]} />
+                    <CardContent className={classes.cardContent}>
+                      <Typography gutterBottom variant="h5" component="h2">
+                        {card[0]}
+                      </Typography>
+                      <Typography>{card[3]}</Typography>
+                    </CardContent>
+                    <CardActions>
+                      <Button
+                        size="small"
+                        color="primary"
+                        onClick={(event) => (window.location.href = card[1])}
+                      >
+                        View
+                      </Button>
+                    </CardActions>
+                  </Card>
+                </Grid>
+              ))}
+            </Grid>
+          </Container>
         </ThemeProvider>
       </main>
     </React.Fragment>
